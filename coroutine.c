@@ -98,6 +98,7 @@ coroutine_new(struct schedule *S, coroutine_func func, void *ud) {
 			int id = (i+S->nco) % S->cap;
 			if (S->co[id] == NULL) {
 				S->co[id] = co;
+				printf("s->nco:%d\n",S->nco);
 				++S->nco;
 				return id;
 			}

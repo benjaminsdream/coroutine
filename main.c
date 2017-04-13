@@ -11,7 +11,9 @@ foo(struct schedule * S, void *ud) {
 	int start = arg->n;
 	int i;
 	for (i=0;i<5;i++) {
-		printf("coroutine %d : %d\n",coroutine_running(S) , start + i);
+		int coid = coroutine_running(S);
+		int costatus = coroutine_status(S,coid);
+		printf("coroutine id: %d coroutine status: %d |  %d\n",coid , costatus ,start + i);
 		coroutine_yield(S);
 	}
 }
@@ -24,6 +26,7 @@ test(struct schedule *S) {
 	int co1 = coroutine_new(S, foo, &arg1);
 	int co2 = coroutine_new(S, foo, &arg2);
 	printf("main start\n");
+	printf("co1.status:%d, co2.status:%d\n",coroutine_status(S,co1),coroutine_status(S,co2));
 	while (coroutine_status(S,co1) && coroutine_status(S,co2)) {
 		coroutine_resume(S,co1);
 		coroutine_resume(S,co2);
